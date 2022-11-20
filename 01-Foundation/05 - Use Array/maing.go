@@ -9,6 +9,6 @@ func main() {
 	myArray[2] = 30
 
 	for key, value := range myArray {
-		fmt.Printf("O valor do indice é %d e o valor é %d \n", key, value)
+		fmt.Printf("The index is %d the value is %d \n", key, value)
 	}
 }
