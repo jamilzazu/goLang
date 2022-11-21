@@ -8,14 +8,14 @@ type TypeNumber interface {
 	~int | ~float64 // use ~ use to accept a custom type such as NewInt
 }
 
-func Compare[T comparable](firstValue T, secondValue T) bool {
+func compare[T comparable](firstValue T, secondValue T) bool {
 	if firstValue == secondValue {
 		return true
 	}
 	return false
 }
 
-func ConstrainedSum[T TypeNumber](values map[string]T) T {
+func constrainedSum[T TypeNumber](values map[string]T) T {
 	var sum T
 	for _, value := range values {
 		sum += value
@@ -23,7 +23,7 @@ func ConstrainedSum[T TypeNumber](values map[string]T) T {
 	return sum
 }
 
-func Sum[T int | float64](values map[string]T) T {
+func sumUnconstrained[T int | float64](values map[string]T) T {
 	var sum T
 	for _, value := range values {
 		sum += value
@@ -45,16 +45,16 @@ func getMapNewInt() map[string]NewInt {
 
 func main() {
 	fmt.Println("\nUsing unconstrained sum")
-	fmt.Printf("Int %d \n", Sum(getMapInt()))
-	fmt.Printf("Float %.2f \n", Sum(getMapFloat()))
+	fmt.Printf("Int %d \n", sumUnconstrained(getMapInt()))
+	fmt.Printf("Float %.2f \n", sumUnconstrained(getMapFloat()))
 
 	fmt.Println("\nUsing constrained sum")
-	fmt.Printf("Int %d \n", ConstrainedSum(getMapInt()))
-	fmt.Printf("Float %.2f \n", ConstrainedSum(getMapFloat()))
+	fmt.Printf("Int %d \n", constrainedSum(getMapInt()))
+	fmt.Printf("Float %.2f \n", constrainedSum(getMapFloat()))
 
 	fmt.Println("\nUsing constrained sum with custom type")
-	fmt.Printf("NewInt %d \n", ConstrainedSum(getMapNewInt()))
+	fmt.Printf("NewInt %d \n", constrainedSum(getMapNewInt()))
 
 	fmt.Println("\nCompare")
-	fmt.Println(Compare(10, 10))
+	fmt.Println(compare(10, 10))
 }

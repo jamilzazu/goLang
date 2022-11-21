@@ -3,7 +3,7 @@ package main
 import "fmt"
 
 type Person interface {
-	Deactivate()
+	deactivate()
 }
 
 type Client struct {
@@ -13,11 +13,11 @@ type Client struct {
 }
 
 func main() {
-	client := BuildCClient()
-	Deactivation(client)
+	client := buildCClient()
+	deactivation(client)
 }
 
-func BuildCClient() Client {
+func buildCClient() Client {
 	client := Client{
 		Name:   "Jamil",
 		Age:    34,
@@ -26,11 +26,11 @@ func BuildCClient() Client {
 	return client
 }
 
-func Deactivation(person Person) {
-	person.Deactivate()
+func deactivation(person Person) {
+	person.deactivate()
 }
 
-func (client Client) Deactivate() {
+func (client Client) deactivate() {
 	fmt.Println("Deactivating Client")
 	client.Active = false
 	fmt.Printf("Name: %s \n", client.Name)

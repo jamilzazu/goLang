@@ -8,17 +8,17 @@ func main() {
 
 	fmt.Println("Empty interfaces accept any value, like Generics")
 
-	ChangeNameSector(sector)
-	ChangeNameTank(tank)
+	changeNameSector(sector)
+	changeNameTank(tank)
 }
 
-func ChangeNameSector(value interface{}) {
+func changeNameSector(value interface{}) {
 	fmt.Printf("\nOld sector name: %v, old type: %T \n", value, value)
 	value = "Sector 10"
 	fmt.Printf("New sector name: %v, new type: %T \n", value, value)
 }
 
-func ChangeNameTank(value interface{}) {
+func changeNameTank(value interface{}) {
 	fmt.Printf(" \nOld tank name: %v, old type: %T \n", value, value)
 	value = 581
 	fmt.Printf("New tank name: %v, new type: %T \n", value, value)

@@ -17,12 +17,12 @@ type Client struct {
 }
 
 func main() {
-	client := BuildCClient()
-	client.Address = BuildCompositeAddress(client)
+	client := buildCClient()
+	client.Address = buildCompositeAddress(client)
 	RunPrint(client)
 }
 
-func BuildCClient() Client {
+func buildCClient() Client {
 	client := Client{
 		Name:   "Jamil",
 		Age:    34,
@@ -31,7 +31,7 @@ func BuildCClient() Client {
 	return client
 }
 
-func BuildCompositeAddress(client Client) Address {
+func buildCompositeAddress(client Client) Address {
 	client.Address.AddressName = "Rua A" // or client.AddressName
 	client.Address.Number = 10           // or client.Number
 	client.Address.City = "São Paulo"    // or client.City

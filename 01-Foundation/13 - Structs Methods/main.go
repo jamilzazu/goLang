@@ -9,11 +9,11 @@ type Client struct {
 }
 
 func main() {
-	client := BuildCClient()
-	RunPrint(client)
+	client := buildCClient()
+	runPrint(client)
 }
 
-func BuildCClient() Client {
+func buildCClient() Client {
 	client := Client{
 		Name:   "Jamil",
 		Age:    34,
@@ -22,18 +22,18 @@ func BuildCClient() Client {
 	return client
 }
 
-func (client Client) Deactivate() Client {
+func (client Client) deactivate() Client {
 	client.Active = false
 	return client
 }
 
-func RunPrint(client Client) {
+func runPrint(client Client) {
 	fmt.Printf("Name: %s \n", client.Name)
 	fmt.Printf("Age: %d \n", client.Age)
 	fmt.Printf("Active: %t \n", client.Active)
 
 	fmt.Println("Deactivating Client")
-	client = client.Deactivate()
+	client = client.deactivate()
 
 	fmt.Printf("Name: %s \n", client.Name)
 	fmt.Printf("Age: %d \n", client.Age)
