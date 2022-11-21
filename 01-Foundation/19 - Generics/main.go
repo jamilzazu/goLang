@@ -8,6 +8,13 @@ type TypeNumber interface {
 	~int | ~float64 // use ~ use to accept a custom type such as NewInt
 }
 
+func Compare[T comparable](firstValue T, secondValue T) bool {
+	if firstValue == secondValue {
+		return true
+	}
+	return false
+}
+
 func ConstrainedSum[T TypeNumber](values map[string]T) T {
 	var sum T
 	for _, value := range values {
@@ -48,4 +55,6 @@ func main() {
 	fmt.Println("\nUsing constrained sum with custom type")
 	fmt.Printf("NewInt %d \n", ConstrainedSum(getMapNewInt()))
 
+	fmt.Println("\nCompare")
+	fmt.Println(Compare(10, 10))
 }
