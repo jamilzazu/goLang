@@ -1,12 +1,13 @@
 package main
 
-//run in terminal to generate the package
-//go mod init github.com/golang/packages
+// run in terminal to generate the package
+// go mod init github.com/golang/packages
 // to make method, function, struct and variable public among the packages, the name must be capitalized. Otherwise, it will be private
 // example function Account
 import (
 	"fmt"
 	account "github.com/golang/packages/Account"
+	"github.com/google/uuid" // run mod tidy to download external packages
 )
 
 func main() {
@@ -18,4 +19,6 @@ func main() {
 	fmt.Println("Account.Limit:", limit)
 
 	account.MessageMyBalance()
+
+	fmt.Println(uuid.New())
 }
