@@ -7,7 +7,7 @@ import (
 )
 
 func createNewFile() {
-	var file = createFile()
+	file := createFile()
 	writeStringToFile(file)
 	writeByteToFile(file)
 	closeFile(file)
