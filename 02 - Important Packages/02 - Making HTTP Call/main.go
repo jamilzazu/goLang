@@ -24,7 +24,7 @@ func readRequestGet(request *http.Response) {
 }
 
 func closeRequestBody(request *http.Response) {
-	request.Body.Close()
+	defer request.Body.Close()
 }
 
 func messageError(message error) {
