@@ -20,8 +20,9 @@ func newTemplate(templateName string) *template.Template {
 
 func executeClientTemplate() {
 	newTemplate := newTemplate("ClientTemplate")
-	newTemplate, _ = newTemplate.Parse("Client: {{.Name}} - Age: {{.Age}}")
-	err := newTemplate.Execute(os.Stdout, createClient())
+	newTemplate, err := newTemplate.Parse("Client: {{.Name}} - Age: {{.Age}}")
+	messageError(err)
+	err = newTemplate.Execute(os.Stdout, createClient())
 	messageError(err)
 }
 
