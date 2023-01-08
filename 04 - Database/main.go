@@ -21,7 +21,15 @@ func NewProduct(name string, price float64) *Product {
 	}
 }
 
-func selectProduct(db *sql.DB, productId string, err error) {
+func selectAllProducts(db *sql.DB, err error) {
+	products, err := selectAllProductsMySql(db)
+	messageError(err)
+	for _, product := range products {
+		fmt.Printf("Id:%v, Product: %v, has the price of %.2f \n", product.ID, product.Name, product.Price)
+	}
+}
+
+func selectProductById(db *sql.DB, productId string, err error) {
 	productSelected, err := selectProductByIdMySql(db, productId)
 	messageError(err)
 	fmt.Printf("Product: %v, has the price of %.2f", productSelected.Name, productSelected.Price)
@@ -38,6 +46,24 @@ func updateNewProduct(db *sql.DB, product *Product, err error) {
 	product.Price = 201.0
 	err = updateProductMySql(db, product)
 	messageError(err)
+}
+
+func selectAllProductsMySql(db *sql.DB) ([]Product, error) {
+	rows, err := db.Query("select id, name, price from products")
+	messageError(err)
+	defer rows.Close()
+
+	var products []Product
+
+	for rows.Next() {
+		var product Product
+		err = rows.Scan(&product.ID, &product.Name, &product.Price)
+		messageError(err)
+
+		products = append(products, product)
+	}
+
+	return products, nil
 }
 
 func selectProductByIdMySql(db *sql.DB, id string) (*Product, error) {
@@ -59,7 +85,6 @@ func insertProductMySql(db *sql.DB, product *Product) error {
 
 	_, err = stmt.Exec(product.ID, product.Name, product.Price)
 	messageError(err)
-
 	return nil
 }
 
@@ -70,7 +95,6 @@ func updateProductMySql(db *sql.DB, product *Product) error {
 
 	_, err = stmt.Exec(product.Name, product.Price, product.ID)
 	messageError(err)
-
 	return nil
 }
 
@@ -94,6 +118,7 @@ func main() {
 	db, err := OpenConnectionMySql()
 	product := insertNewProduct(db, err)
 	updateNewProduct(db, product, err)
-	selectProduct(db, product.ID, err)
+	selectProductById(db, product.ID, err)
+	selectAllProducts(db, err)
 	closeConnectionMySql(db)
 }
