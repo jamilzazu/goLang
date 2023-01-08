@@ -1,0 +1,22 @@
+{{ template "header.html"}}
+<h1>Client</h1>
+
+<table>
+  <thead>
+  <tr>
+    <th>Name</th>
+    <th>Age</th>
+  </tr>
+  </thead>
+  <tbody>
+  {{ range . }}
+  {{ if ge .Age 34 }}
+  <tr>
+    <td>{{ .Name | ToUpper}}</td>
+    <td>{{ .Age }}</td>
+  </tr>
+  {{ end }}
+  {{ end }}
+  </tbody>
+</table>
+{{ template "footer.html"}}
