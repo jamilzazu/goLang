@@ -15,9 +15,9 @@ func messageError(err error) {
 }
 
 func main() {
-	c := http.Client{Timeout: time.Second}
+	client := http.Client{Timeout: time.Second}
 	jsonVar := bytes.NewBuffer([]byte(`{"name": "jamil"}`))
-	resp, err := c.Post("http://google.com", "application/json", jsonVar)
+	resp, err := client.Post("http://google.com", "application/json", jsonVar)
 	messageError(err)
 
 	defer resp.Body.Close()

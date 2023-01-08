@@ -13,8 +13,8 @@ func messageError(err error) {
 }
 
 func main() {
-	c := http.Client{Timeout: time.Second}
-	resp, err := c.Get("http://google.com")
+	client := http.Client{Timeout: time.Second}
+	resp, err := client.Get("http://google.com")
 	messageError(err)
 
 	defer resp.Body.Close()
