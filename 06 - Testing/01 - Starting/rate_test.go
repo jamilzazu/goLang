@@ -1,10 +1,8 @@
-package _1___Starting
+package rate
 
 import "testing"
 
-// Commands
-// go test .
-// go test -v
+// Commands go test . go test -v
 
 func TestCalculateRate(t *testing.T) {
 	amount := 500.0

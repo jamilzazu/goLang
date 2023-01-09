@@ -1,4 +1,4 @@
-package _1___Starting
+package rate
 
 func CalculateRate(amount float64) float64 {
 	if amount >= 1000 {
