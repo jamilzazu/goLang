@@ -2,7 +2,10 @@ package rate
 
 import "testing"
 
-// Commands go test . go test -v
+// Commands
+// go test .
+// go test -v
+// go test -coverprofile=coverage.out && go tool cover -html=coverage.out
 
 func TestCalculateRate(t *testing.T) {
 	amount := 500.0
@@ -25,6 +28,7 @@ func TestCalculateRateBatch(t *testing.T) {
 		{500.0, 5.0},
 		{1000.0, 10.0},
 		{1500.0, 10.0},
+		//{0.0, 0.0},
 	}
 
 	for _, item := range table {
