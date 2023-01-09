@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
@@ -18,6 +19,20 @@ type Product struct {
 //		Price: price,
 //	}
 //}
+
+func OpenConnectionMySql() (*gorm.DB, error) {
+	dsn := "root:root@tcp(localhost:3306)/godb"
+	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
+	messageError(err)
+
+	AutoMigrateGORM(db)
+	return db, err
+}
+
+func AutoMigrateGORM(db *gorm.DB) {
+	db.AutoMigrate(&Product{})
+	//AutoMigrateCreateProduct(db)
+}
 
 func AutoMigrateCreateProduct(db *gorm.DB) {
 	products := []Product{
@@ -37,17 +52,25 @@ func AutoMigrateCreateProduct(db *gorm.DB) {
 	db.Create(products)
 }
 
-func AutoMigrateGORM(db *gorm.DB) {
-	db.AutoMigrate(&Product{})
-	AutoMigrateCreateProduct(db)
+func selectFirstProductById(db *gorm.DB, productId int) {
+	var product Product
+	db.First(&product, productId)
+	fmt.Println(product)
 }
 
-func OpenConnectionMySql() {
-	dsn := "root:root@tcp(localhost:3306)/godb"
-	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
-	messageError(err)
+func selectFirstProductByName(db *gorm.DB, productName string) {
+	var product Product
+	db.First(&product, "name = ?", productName)
+	fmt.Println(product)
+}
 
-	AutoMigrateGORM(db)
+func selectAllProducts(db *gorm.DB) {
+	var products []Product
+	db.Find(&products)
+
+	for _, product := range products {
+		fmt.Println(product)
+	}
 }
 
 func messageError(err error) {
@@ -57,5 +80,9 @@ func messageError(err error) {
 }
 
 func main() {
-	OpenConnectionMySql()
+	db, err := OpenConnectionMySql()
+	messageError(err)
+	selectFirstProductById(db, 1)
+	selectFirstProductByName(db, "Monitor")
+	selectAllProducts(db)
 }
