@@ -12,14 +12,6 @@ type Product struct {
 	Price float64
 }
 
-//func NewProduct(name string, price float64) *Product {
-//	return &Product{
-//		ID:    uuid.New().String(),
-//		Name:  name,
-//		Price: price,
-//	}
-//}
-
 func OpenConnectionMySql() (*gorm.DB, error) {
 	dsn := "root:root@tcp(localhost:3306)/godb"
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
@@ -64,6 +56,32 @@ func selectFirstProductByName(db *gorm.DB, productName string) {
 	fmt.Println(product)
 }
 
+func selectAllProductsWithPagination(db *gorm.DB) {
+	var products []Product
+	db.Limit(2).Offset(1).Find(&products)
+
+	for _, product := range products {
+		fmt.Println(product)
+	}
+}
+
+func SelectProductPriceIsGreaterThanTheValueEntered(db *gorm.DB, productPrice float64) {
+	var products []Product
+	db.Where("price > ?", productPrice).Find(&products)
+
+	for _, product := range products {
+		fmt.Println(product)
+	}
+}
+
+func SelectTheProductIfTheNameIsLike(db *gorm.DB, productName string) {
+	var products []Product
+	db.Where("name LIKE ?", "%"+productName+"%").Find(&products)
+	for _, product := range products {
+		fmt.Println(product)
+	}
+}
+
 func selectAllProducts(db *gorm.DB) {
 	var products []Product
 	db.Find(&products)
@@ -85,4 +103,7 @@ func main() {
 	selectFirstProductById(db, 1)
 	selectFirstProductByName(db, "Monitor")
 	selectAllProducts(db)
+	selectAllProductsWithPagination(db)
+	SelectProductPriceIsGreaterThanTheValueEntered(db, 244.5)
+	SelectTheProductIfTheNameIsLike(db, "ouse")
 }
