@@ -7,6 +7,6 @@ import (
 
 func main() {
 	// go mod ini
-	sum := math.Math{Value1: 1, Value2: 2}
+	sum := math.NewMath(1, 2)
 	fmt.Println(sum.Add())
 }
