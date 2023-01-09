@@ -44,6 +44,21 @@ func AutoMigrateCreateProduct(db *gorm.DB) {
 	db.Create(products)
 }
 
+func updateProductMouse(db *gorm.DB, productId int) {
+	var product Product
+	db.First(&product, productId)
+	product.Name = "New Mouse"
+	db.Save(&product)
+
+	selectFirstProductById(db, product.ID)
+}
+
+func deleteProductById(db *gorm.DB, productId int) {
+	var product Product
+	db.First(&product, productId)
+	db.Delete(&product, productId)
+}
+
 func selectFirstProductById(db *gorm.DB, productId int) {
 	var product Product
 	db.First(&product, productId)
@@ -100,10 +115,13 @@ func messageError(err error) {
 func main() {
 	db, err := OpenConnectionMySql()
 	messageError(err)
-	selectFirstProductById(db, 1)
-	selectFirstProductByName(db, "Monitor")
-	selectAllProducts(db)
-	selectAllProductsWithPagination(db)
-	SelectProductPriceIsGreaterThanTheValueEntered(db, 244.5)
-	SelectTheProductIfTheNameIsLike(db, "ouse")
+	//selectFirstProductById(db, 1)
+	//selectFirstProductByName(db, "Monitor")
+	//selectAllProducts(db)
+	//selectAllProductsWithPagination(db)
+	//SelectProductPriceIsGreaterThanTheValueEntered(db, 244.5)
+	//SelectTheProductIfTheNameIsLike(db, "ouse")
+	//
+	//updateProductMouse(db, 1)
+	deleteProductById(db, 1)
 }
