@@ -10,20 +10,19 @@ type Product struct {
 	ID    int `gorm:"primaryKey"`
 	Name  string
 	Price float64
+	gorm.Model
 }
 
 func OpenConnectionMySql() (*gorm.DB, error) {
-	dsn := "root:root@tcp(localhost:3306)/godb"
+	dsn := "root:root@tcp(localhost:3306)/godb?charset=utf8mb4&parseTime=True&loc=Local"
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	messageError(err)
-
-	AutoMigrateGORM(db)
 	return db, err
 }
 
 func AutoMigrateGORM(db *gorm.DB) {
 	db.AutoMigrate(&Product{})
-	//AutoMigrateCreateProduct(db)
+	AutoMigrateCreateProduct(db)
 }
 
 func AutoMigrateCreateProduct(db *gorm.DB) {
@@ -80,7 +79,7 @@ func selectAllProductsWithPagination(db *gorm.DB) {
 	}
 }
 
-func SelectProductPriceIsGreaterThanTheValueEntered(db *gorm.DB, productPrice float64) {
+func selectProductPriceIsGreaterThanTheValueEntered(db *gorm.DB, productPrice float64) {
 	var products []Product
 	db.Where("price > ?", productPrice).Find(&products)
 
@@ -89,7 +88,7 @@ func SelectProductPriceIsGreaterThanTheValueEntered(db *gorm.DB, productPrice fl
 	}
 }
 
-func SelectTheProductIfTheNameIsLike(db *gorm.DB, productName string) {
+func selectTheProductIfTheNameIsLike(db *gorm.DB, productName string) {
 	var products []Product
 	db.Where("name LIKE ?", "%"+productName+"%").Find(&products)
 	for _, product := range products {
@@ -115,13 +114,16 @@ func messageError(err error) {
 func main() {
 	db, err := OpenConnectionMySql()
 	messageError(err)
-	//selectFirstProductById(db, 1)
-	//selectFirstProductByName(db, "Monitor")
-	//selectAllProducts(db)
-	//selectAllProductsWithPagination(db)
-	//SelectProductPriceIsGreaterThanTheValueEntered(db, 244.5)
-	//SelectTheProductIfTheNameIsLike(db, "ouse")
-	//
-	//updateProductMouse(db, 1)
+
+	AutoMigrateGORM(db)
+
+	selectFirstProductById(db, 1)
+	selectFirstProductByName(db, "Monitor")
+	selectAllProducts(db)
+	selectAllProductsWithPagination(db)
+	selectProductPriceIsGreaterThanTheValueEntered(db, 244.5)
+	selectTheProductIfTheNameIsLike(db, "ouse")
+
+	updateProductMouse(db, 1)
 	deleteProductById(db, 1)
 }
