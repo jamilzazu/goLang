@@ -42,9 +42,14 @@ func insertNewProduct(db *sql.DB, err error) *Product {
 	return product
 }
 
-func updateNewProduct(db *sql.DB, product *Product, err error) {
+func updateProductById(db *sql.DB, product *Product, err error) {
 	product.Price = 201.0
-	err = updateProductMySql(db, product)
+	err = updateProductByIdMySql(db, product)
+	messageError(err)
+}
+
+func deleteProductById(db *sql.DB, productId string, err error) {
+	err = deleteProductByIdMySql(db, productId)
 	messageError(err)
 }
 
@@ -88,12 +93,22 @@ func insertProductMySql(db *sql.DB, product *Product) error {
 	return nil
 }
 
-func updateProductMySql(db *sql.DB, product *Product) error {
+func updateProductByIdMySql(db *sql.DB, product *Product) error {
 	stmt, err := db.Prepare("update products set name = ?, price = ? where id = ?")
 	messageError(err)
 	defer stmt.Close()
 
 	_, err = stmt.Exec(product.Name, product.Price, product.ID)
+	messageError(err)
+	return nil
+}
+
+func deleteProductByIdMySql(db *sql.DB, productId string) error {
+	stmt, err := db.Prepare("delete from products where id = ?")
+	messageError(err)
+	defer stmt.Close()
+
+	_, err = stmt.Exec(productId)
 	messageError(err)
 	return nil
 }
@@ -117,8 +132,11 @@ func messageError(err error) {
 func main() {
 	db, err := OpenConnectionMySql()
 	product := insertNewProduct(db, err)
-	updateNewProduct(db, product, err)
+
+	updateProductById(db, product, err)
 	selectProductById(db, product.ID, err)
+	deleteProductById(db, product.ID, err)
 	selectAllProducts(db, err)
+	
 	closeConnectionMySql(db)
 }
