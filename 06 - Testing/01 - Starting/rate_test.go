@@ -5,7 +5,16 @@ import "testing"
 // Commands
 // go test .
 // go test -v
+
+// #Coverage
 // go test -coverprofile=coverage.out && go tool cover -html=coverage.out
+
+// #Benchmark
+// go test -bench .
+// go test -bench . -run=^#
+// go test -bench . -run=^# -count=10
+// go test -bench . -run=^# -count=10 -benchtime=3s
+// go test -bench . -run=^# -benchmem
 
 func TestCalculateRate(t *testing.T) {
 	amount := 500.0
@@ -37,5 +46,17 @@ func TestCalculateRateBatch(t *testing.T) {
 		if result != item.expect {
 			t.Errorf("Expected %f but got %f", item.expect, result)
 		}
+	}
+}
+
+func BenchmarkCalculateRateBatch(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		CalculateRate(500.0)
+	}
+}
+
+func BenchmarkCalculateRateBatchTimeSleep(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		CalculateRateTimeSleep(500.0)
 	}
 }
